@@ -198,6 +198,9 @@ class RestHandler(tornado.web.RequestHandler):
 					else:
 						self.gen_http_error(500,"Internal Server Error : response is not %s document"%produces)
 				except Exception as detail:
+                                    if (isinstance(detail, tornado.web.HTTPError)):
+                                        raise detail
+                                    else:
 					self.gen_http_error(500,"Internal Server Error : %s"%detail)
 
 	def _find_params_value_of_url(self,services,url):
