@@ -70,6 +70,12 @@ def config(func,method,**kwparams):
 
 	return operation
 
+def options(*params, **kwparams):
+	""" Decorator for config a python function like a Rest GET verb	"""
+	def method(f):
+		return config(f,'OPTIONS',**kwparams)
+	return method
+
 def get(*params, **kwparams):
 	""" Decorator for config a python function like a Rest GET verb	"""
 	def method(f):
@@ -116,6 +122,10 @@ class RestHandler(tornado.web.RequestHandler):
         def patch(self):
                 """ Executes patch method"""
                 self._exe('PATCH')
+
+        def options(self):
+                """ Executes patch method"""
+                self._exe('OPTIONS')
 
 	def delete(self):
 		""" Executes put method"""
