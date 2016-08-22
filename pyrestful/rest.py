@@ -137,7 +137,7 @@ class RestHandler(tornado.web.RequestHandler):
 		http_methods = list(map(lambda op: getattr(getattr(self,op),'_method'), functions))
 
                 if method == 'OPTIONS':
-                    self.set_header('Allow', ','.join(set(http_methods)))
+                    self.set_header('Allow', ','.join(set(http_methods)+{'OPTIONS'}))
                     self.finish()
                     return
 
