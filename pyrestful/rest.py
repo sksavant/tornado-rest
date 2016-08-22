@@ -70,11 +70,6 @@ def config(func,method,**kwparams):
 
 	return operation
 
-def options(*params, **kwparams):
-	""" Decorator for config a python function like a Rest GET verb	"""
-	def method(f):
-		return config(f,'OPTIONS',**kwparams)
-	return method
 
 def get(*params, **kwparams):
 	""" Decorator for config a python function like a Rest GET verb	"""
@@ -123,10 +118,6 @@ class RestHandler(tornado.web.RequestHandler):
                 """ Executes patch method"""
                 self._exe('PATCH')
 
-        def options(self):
-                """ Executes patch method"""
-                self._exe('OPTIONS')
-
 	def delete(self):
 		""" Executes put method"""
 		self._exe('DELETE')
@@ -144,6 +135,11 @@ class RestHandler(tornado.web.RequestHandler):
 		functions    = list(filter(lambda op: hasattr(getattr(self,op),'_service_name') == True and inspect.ismethod(getattr(self,op)) == True, dir(self)))
 		# Get all http methods configured in the class RestHandler
 		http_methods = list(map(lambda op: getattr(getattr(self,op),'_method'), functions))
+
+                if method == 'OPTIONS':
+                    self.set_header('Allow', ','.join(set(http_methods)))
+                    self.finish()
+                    return
 
 		if method not in http_methods:
 			raise tornado.web.HTTPError(405,'The service not have %s verb'%method)
