@@ -122,6 +122,10 @@ class RestHandler(tornado.web.RequestHandler):
 		""" Executes put method"""
 		self._exe('DELETE')
 
+        def options(self):
+		""" Executes options method"""
+		self._exe('OPTIONS')
+
 	def _exe(self, method):
 		""" Executes the python function for the Rest Service """
 		request_path = self.request.path
@@ -136,8 +140,9 @@ class RestHandler(tornado.web.RequestHandler):
 		# Get all http methods configured in the class RestHandler
 		http_methods = list(map(lambda op: getattr(getattr(self,op),'_method'), functions))
 
+                print(method)
                 if method == 'OPTIONS':
-                    self.set_header('Allow', ','.join(set(http_methods)+{'OPTIONS'}))
+                    self.set_header('Allow', ','.join(set(http_methods+['OPTIONS'])))
                     self.finish()
                     return
 
