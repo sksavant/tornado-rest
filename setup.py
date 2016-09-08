@@ -21,7 +21,7 @@ try:
 except ImportError:
 	pass
 
-packages=['tornado','pyconvert']
+packages=['tornado', 'pyconvert>=0.6.3beta']
 
 distutils.core.setup(
 	name='pyrestful',
@@ -29,5 +29,7 @@ distutils.core.setup(
 	packages=['pyrestful','demos'],
 	author='Innovaser',
 	author_email='rancavil@innovaser.cl',
-	install_requires=packages
+	install_requires=packages,
+        dependency_links = ['http://github.com/sksavant/python-convert/tarball/release-20160908#egg=pyconvert-0.6.3beta'],
+
 )
